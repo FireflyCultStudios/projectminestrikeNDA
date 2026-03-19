@@ -1,0 +1,851 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>MineStrike — Non-Disclosure Agreement</title>
+<link href="https://fonts.googleapis.com/css2?family=Orbitron:wght@700;900&family=Rajdhani:wght@400;500;600;700&family=Share+Tech+Mono&display=swap" rel="stylesheet">
+<style>
+  :root {
+    --cyan:    #00f0ff;
+    --green:   #00ff88;
+    --pink:    #ff2d78;
+    --amber:   #ffaa00;
+    --bg-deep: #020408;
+    --glass-bg: rgba(6, 20, 30, 0.65);
+    --glass-border: rgba(0, 240, 255, 0.12);
+    --text-primary: #e8f4f8;
+    --text-secondary: #7a9db0;
+    --text-dim: #3d5a68;
+  }
+
+  *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+  html { scroll-behavior: smooth; }
+
+  body {
+    background: var(--bg-deep);
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    min-height: 100vh;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    padding: 60px 20px 80px;
+    position: relative;
+    overflow-x: hidden;
+  }
+
+  .bg-grid {
+    position: fixed; inset: 0;
+    background-image:
+      linear-gradient(rgba(0,240,255,0.04) 1px, transparent 1px),
+      linear-gradient(90deg, rgba(0,240,255,0.04) 1px, transparent 1px);
+    background-size: 48px 48px;
+    pointer-events: none; z-index: 0;
+  }
+  .bg-glow-tl {
+    position: fixed; top: -200px; left: -200px;
+    width: 600px; height: 600px;
+    background: radial-gradient(circle, rgba(0,240,255,0.07) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  .bg-glow-br {
+    position: fixed; bottom: -200px; right: -200px;
+    width: 700px; height: 700px;
+    background: radial-gradient(circle, rgba(0,255,136,0.05) 0%, transparent 70%);
+    pointer-events: none; z-index: 0;
+  }
+  .bg-vignette {
+    position: fixed; inset: 0;
+    background: radial-gradient(ellipse at 50% 40%, transparent 30%, rgba(2,4,8,0.85) 100%);
+    pointer-events: none; z-index: 0;
+  }
+
+  .container {
+    position: relative; z-index: 1;
+    width: 100%; max-width: 680px;
+  }
+
+  /* ── HEADER ── */
+  .header {
+    text-align: center; margin-bottom: 40px;
+    animation: fadeDown 0.8s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .studio-tag {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px; letter-spacing: 0.35em;
+    color: var(--text-dim); text-transform: uppercase; margin-bottom: 16px;
+  }
+  .logo-wrap { position: relative; display: inline-block; }
+  .logo {
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 900; letter-spacing: 0.04em; line-height: 1;
+  }
+  .logo .mine   { color: var(--cyan); }
+  .logo .strike { color: var(--green); }
+  .logo-glow {
+    position: absolute; inset: 0;
+    font-family: 'Orbitron', monospace;
+    font-size: clamp(2rem, 8vw, 3.2rem);
+    font-weight: 900; letter-spacing: 0.04em; line-height: 1;
+    color: var(--cyan); filter: blur(20px); opacity: 0.22;
+    pointer-events: none; user-select: none;
+  }
+  .doc-title {
+    margin-top: 14px; font-family: 'Orbitron', monospace;
+    font-size: 11px; letter-spacing: 0.25em;
+    color: var(--text-secondary); text-transform: uppercase;
+  }
+  .version-pill {
+    display: inline-flex; align-items: center; gap: 8px;
+    margin-top: 10px; padding: 4px 14px;
+    background: rgba(255,45,120,0.08);
+    border: 1px solid rgba(255,45,120,0.3);
+    color: var(--pink);
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px; letter-spacing: 0.2em; text-transform: uppercase;
+    border-radius: 2px;
+  }
+  .version-pill .dot {
+    width: 5px; height: 5px; background: var(--pink);
+    border-radius: 50%; animation: blink 1.6s ease-in-out infinite;
+  }
+
+  /* ── GLASS PANEL ── */
+  .glass-panel {
+    background: var(--glass-bg);
+    border: 1px solid var(--glass-border);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    padding: 28px 32px; position: relative;
+    margin-bottom: 12px;
+    animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .glass-panel:nth-child(1) { animation-delay: 0.05s; }
+  .glass-panel:nth-child(2) { animation-delay: 0.15s; }
+  .glass-panel:nth-child(3) { animation-delay: 0.25s; }
+  .glass-panel:nth-child(4) { animation-delay: 0.35s; }
+
+  .glass-panel::before {
+    content: ''; position: absolute; top: -1px; left: -1px;
+    width: 20px; height: 20px;
+    border-top: 2px solid var(--cyan); border-left: 2px solid var(--cyan); opacity: 0.6;
+  }
+  .glass-panel::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 20px; height: 20px;
+    border-bottom: 2px solid var(--green); border-right: 2px solid var(--green); opacity: 0.4;
+  }
+
+  .panel-header {
+    display: flex; align-items: center; gap: 10px;
+    margin-bottom: 20px; padding-bottom: 14px;
+    border-bottom: 1px solid rgba(0,240,255,0.08);
+  }
+  .panel-header .icon { font-size: 13px; color: var(--cyan); opacity: 0.8; }
+  .panel-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 10px; letter-spacing: 0.3em;
+    color: var(--cyan); text-transform: uppercase; opacity: 0.85;
+  }
+
+  /* ── NDA SCROLL BOX ── */
+  .nda-scroll {
+    max-height: 360px; overflow-y: auto;
+    padding-right: 12px; margin-bottom: 12px;
+  }
+  .nda-scroll::-webkit-scrollbar { width: 4px; }
+  .nda-scroll::-webkit-scrollbar-track { background: transparent; }
+  .nda-scroll::-webkit-scrollbar-thumb { background: rgba(0,240,255,0.2); border-radius: 2px; }
+
+  .nda-clause { margin-bottom: 20px; }
+  .nda-clause-title {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; letter-spacing: 0.22em;
+    color: var(--cyan); text-transform: uppercase;
+    margin-bottom: 8px; opacity: 0.85;
+  }
+  .nda-clause p {
+    font-size: 12.5px; line-height: 1.75;
+    color: var(--text-secondary); font-weight: 500;
+    margin-bottom: 6px;
+  }
+  .nda-clause p:last-child { margin-bottom: 0; }
+  .nda-clause strong { color: var(--text-primary); font-weight: 700; }
+  .nda-clause ul { list-style: none; padding: 0; margin-top: 6px; display: flex; flex-direction: column; gap: 6px; }
+  .nda-clause ul li {
+    font-size: 12.5px; line-height: 1.7;
+    color: var(--text-secondary); font-weight: 500;
+    padding-left: 16px; position: relative;
+  }
+  .nda-clause ul li::before {
+    content: '▸'; position: absolute; left: 0;
+    color: var(--cyan); opacity: 0.5; font-size: 10px; top: 3px;
+  }
+
+  .scroll-hint {
+    text-align: center;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; letter-spacing: 0.18em;
+    color: var(--text-dim); text-transform: uppercase;
+    margin-top: 8px;
+    transition: opacity 0.4s;
+    animation: blink 2s ease-in-out infinite;
+  }
+
+  /* ── FORM FIELDS ── */
+  .field-group { display: flex; flex-direction: column; gap: 16px; }
+  .field-row { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+  .field { display: flex; flex-direction: column; gap: 7px; }
+  .field label {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; letter-spacing: 0.25em;
+    color: var(--text-secondary); text-transform: uppercase;
+    display: flex; align-items: center; gap: 5px;
+  }
+  .field label .req { color: var(--pink); font-size: 11px; line-height: 1; }
+  .field input {
+    background: rgba(0,240,255,0.03);
+    border: 1px solid rgba(0,240,255,0.1);
+    color: var(--text-primary);
+    font-family: 'Rajdhani', sans-serif;
+    font-size: 15px; font-weight: 500;
+    padding: 11px 14px; outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    width: 100%; border-radius: 2px;
+  }
+  .field input:focus {
+    border-color: rgba(0,240,255,0.5);
+    background: rgba(0,240,255,0.05);
+    box-shadow: 0 0 0 1px rgba(0,240,255,0.15), 0 0 20px rgba(0,240,255,0.06);
+  }
+  .field input::placeholder { color: var(--text-dim); }
+
+  /* Signature field */
+  .sig-field input {
+    font-size: 18px; font-weight: 700; font-style: italic;
+    letter-spacing: 0.04em;
+    border-color: rgba(0,255,136,0.2); color: var(--green);
+  }
+  .sig-field input:focus {
+    border-color: rgba(0,255,136,0.5);
+    background: rgba(0,255,136,0.04);
+    box-shadow: 0 0 0 1px rgba(0,255,136,0.2), 0 0 20px rgba(0,255,136,0.06);
+  }
+  .sig-field input::placeholder { color: rgba(0,255,136,0.2); font-style: italic; }
+  .sig-note {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; letter-spacing: 0.15em;
+    color: var(--text-dim); text-transform: uppercase; margin-top: 4px;
+  }
+
+  /* Date display */
+  .date-display {
+    display: flex; align-items: center; gap: 12px;
+    padding: 11px 14px;
+    background: rgba(255,170,0,0.04);
+    border: 1px solid rgba(255,170,0,0.15); border-radius: 2px;
+  }
+  .date-display .date-icon { color: var(--amber); opacity: 0.7; font-size: 12px; }
+  .date-display .date-text {
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 12px; letter-spacing: 0.1em; color: var(--text-secondary);
+  }
+
+  /* Consent */
+  .consent-label {
+    display: flex; align-items: flex-start; gap: 14px; padding: 16px;
+    background: rgba(0,240,255,0.02);
+    border: 1px solid rgba(0,240,255,0.08); border-radius: 2px;
+    cursor: pointer; transition: border-color 0.2s, background 0.2s;
+  }
+  .consent-label:hover { background: rgba(0,240,255,0.04); border-color: rgba(0,240,255,0.18); }
+  .consent-label input[type="checkbox"] { display: none; }
+  .consent-box {
+    width: 16px; height: 16px; flex-shrink: 0; margin-top: 2px;
+    border: 1px solid var(--text-dim); border-radius: 2px;
+    background: transparent; transition: all 0.15s; position: relative;
+  }
+  .consent-label:has(input:checked) .consent-box { background: var(--green); border-color: var(--green); }
+  .consent-label:has(input:checked) .consent-box::after {
+    content: ''; position: absolute; inset: 2px;
+    background: var(--bg-deep);
+    clip-path: polygon(14% 44%, 0 65%, 50% 100%, 100% 16%, 80% 0%, 43% 62%);
+  }
+  .consent-label:has(input:checked) { border-color: rgba(0,255,136,0.25); background: rgba(0,255,136,0.04); }
+  .consent-text { font-size: 13px; line-height: 1.65; color: var(--text-secondary); font-weight: 500; }
+  .consent-text em { font-style: normal; color: var(--cyan); font-weight: 600; }
+
+  /* ── SUBMIT ── */
+  .submit-wrap { margin-top: 4px; animation: fadeUp 0.7s cubic-bezier(0.16,1,0.3,1) 0.4s both; }
+  .submit-btn {
+    width: 100%; padding: 18px; background: transparent;
+    border: 1px solid var(--green); color: var(--green);
+    font-family: 'Orbitron', monospace; font-size: 12px; font-weight: 700;
+    letter-spacing: 0.25em; text-transform: uppercase;
+    cursor: pointer; position: relative; overflow: hidden; border-radius: 2px;
+    transition: color 0.3s, box-shadow 0.3s;
+  }
+  .submit-btn::before {
+    content: ''; position: absolute; inset: 0;
+    background: linear-gradient(90deg, var(--green), var(--cyan));
+    transform: translateX(-101%);
+    transition: transform 0.35s cubic-bezier(0.4,0,0.2,1); z-index: 0;
+  }
+  .submit-btn:hover::before { transform: translateX(0); }
+  .submit-btn:hover { color: var(--bg-deep); box-shadow: 0 0 40px rgba(0,255,136,0.25); }
+  .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
+  .submit-btn span { position: relative; z-index: 1; }
+
+  /* ── ERROR STATES ── */
+  .field-error input {
+    border-color: rgba(255,45,120,0.6) !important;
+    box-shadow: 0 0 0 1px rgba(255,45,120,0.25) !important;
+  }
+  .consent-error { border-color: rgba(255,45,120,0.5) !important; background: rgba(255,45,120,0.04) !important; }
+
+  /* ── SUCCESS ── */
+  .success-panel {
+    background: var(--glass-bg);
+    border: 1px solid rgba(0,255,136,0.2);
+    backdrop-filter: blur(20px) saturate(1.4);
+    -webkit-backdrop-filter: blur(20px) saturate(1.4);
+    padding: 64px 36px; text-align: center;
+    margin-bottom: 12px; position: relative; display: none;
+    animation: fadeUp 0.6s cubic-bezier(0.16,1,0.3,1) both;
+  }
+  .success-panel::before {
+    content: ''; position: absolute; top: -1px; left: -1px;
+    width: 20px; height: 20px;
+    border-top: 2px solid var(--green); border-left: 2px solid var(--green);
+  }
+  .success-panel::after {
+    content: ''; position: absolute; bottom: -1px; right: -1px;
+    width: 20px; height: 20px;
+    border-bottom: 2px solid var(--green); border-right: 2px solid var(--green);
+  }
+  .success-icon {
+    font-size: 3rem; color: var(--green); margin-bottom: 20px;
+    text-shadow: 0 0 30px rgba(0,255,136,0.5);
+    animation: blink 2s ease-in-out infinite;
+  }
+  .success-title {
+    font-family: 'Orbitron', monospace; font-size: 1.4rem; font-weight: 700;
+    color: var(--green); letter-spacing: 0.1em; margin-bottom: 14px;
+    text-shadow: 0 0 24px rgba(0,255,136,0.35);
+  }
+  .success-msg {
+    font-size: 14px; line-height: 1.75; color: var(--text-secondary);
+    max-width: 400px; margin: 0 auto; font-weight: 500;
+  }
+  .success-msg em { font-style: normal; color: var(--cyan); }
+  .success-callsign {
+    display: inline-block; margin-top: 28px; padding: 10px 22px;
+    background: rgba(0,255,136,0.06); border: 1px solid rgba(0,255,136,0.35);
+    color: var(--green); font-family: 'Share Tech Mono', monospace;
+    font-size: 12px; letter-spacing: 0.25em; border-radius: 2px;
+  }
+
+  /* ── FOOTER ── */
+  .footer {
+    text-align: center; margin-top: 32px;
+    font-family: 'Share Tech Mono', monospace;
+    font-size: 9px; letter-spacing: 0.2em; color: var(--text-dim);
+    animation: fadeUp 1s ease 0.5s both; line-height: 1.8;
+  }
+
+  /* ── ANIMATIONS ── */
+  @keyframes fadeDown { from { opacity: 0; transform: translateY(-24px); } to { opacity: 1; transform: translateY(0); } }
+  @keyframes fadeUp   { from { opacity: 0; transform: translateY(20px);  } to { opacity: 1; transform: translateY(0); } }
+  @keyframes blink    { 0%, 100% { opacity: 1; } 50% { opacity: 0.45; } }
+
+  @media (max-width: 500px) {
+    body { padding: 40px 14px 60px; }
+    .glass-panel { padding: 22px 18px; }
+    .field-row { grid-template-columns: 1fr; }
+  }
+
+  /* ── PRINT STYLES ── */
+  @media print {
+    body { background: #fff !important; color: #111 !important; padding: 20px !important; }
+    .bg-grid, .bg-glow-tl, .bg-glow-br, .bg-vignette { display: none !important; }
+    .success-panel, .footer, .submit-btn { display: none !important; }
+    .glass-panel { background: #fff !important; border: 1px solid #ccc !important; backdrop-filter: none !important; padding: 20px !important; }
+    .glass-panel::before, .glass-panel::after { display: none !important; }
+    .panel-header { border-bottom: 1px solid #ccc !important; }
+    .panel-title { color: #333 !important; }
+    .icon { color: #333 !important; }
+    .nda-clause-title { color: #111 !important; }
+    .nda-clause p, .nda-clause li { color: #333 !important; }
+    .nda-clause strong { color: #000 !important; }
+    #signedNdaCopy { display: block !important; }
+    [style*="color:var(--green)"], [style*="color: var(--green)"] { color: #111 !important; }
+    * { -webkit-print-color-adjust: exact; print-color-adjust: exact; }
+  }
+</style>
+</head>
+<body>
+
+<div class="bg-grid"></div>
+<div class="bg-glow-tl"></div>
+<div class="bg-glow-br"></div>
+<div class="bg-vignette"></div>
+
+<div class="container">
+
+  <!-- HEADER -->
+  <div class="header">
+    <div class="studio-tag">Firefly Cult Studios</div>
+    <div class="logo-wrap">
+      <div class="logo-glow" aria-hidden="true">MINESTRIKE</div>
+      <div class="logo"><span class="mine">MINE</span><span class="strike">STRIKE</span></div>
+    </div>
+    <div class="doc-title">Non-Disclosure Agreement</div>
+    <div style="margin-top:10px;">
+      <span class="version-pill"><span class="dot"></span>Pre-Alpha Testing Programme</span>
+    </div>
+  </div>
+
+  <!-- SUCCESS PANEL -->
+  <div class="success-panel" id="successPanel">
+    <div class="success-icon">◈</div>
+    <div class="success-title">Agreement Signed</div>
+    <p class="success-msg">
+      Your NDA has been recorded, operative.<br><br>
+      Your signed copy is shown below. Use the button to save or print it for your records.<br><br>
+      <em>Firefly Cult Studios will be in touch with your testing access shortly.</em>
+    </p>
+    <div class="success-callsign" id="successCallsign"></div>
+
+    <!-- Download button -->
+    <button class="submit-btn" style="margin-top:24px; max-width:320px; margin-left:auto; margin-right:auto; display:block;" onclick="printNda()">
+      <span>⬇ &nbsp;Download / Print NDA</span>
+    </button>
+  </div>
+
+  <!-- SIGNED NDA COPY -->
+  <div class="glass-panel" id="signedNdaCopy" style="display:none;">
+    <div class="panel-header">
+      <span class="icon">⚑</span>
+      <span class="panel-title">Your Signed NDA — Retain for Your Records</span>
+    </div>
+
+    <div id="signedNdaContent">
+      <div class="nda-clause">
+        <div class="nda-clause-title">Signer Details</div>
+        <p><strong>Full Name:</strong> <span id="ndaCopyName" style="color:var(--green);"></span></p>
+        <p><strong>Callsign:</strong> <span id="ndaCopyCallsign" style="color:var(--green);"></span></p>
+        <p><strong>Date Signed:</strong> <span id="ndaCopyDate"></span></p>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">1. Parties</div>
+        <p><strong>Disclosing Party:</strong> Firefly Cult Studios (the Studio), the developer and owner of the software product currently designated MineStrike (internal working title; final release title withheld), together with all associated materials, concepts, and intellectual property.</p>
+        <p><strong>Receiving Party:</strong> <strong style="color:var(--green);" id="ndaCopyPartyName"></strong> (the Tester), operating under callsign <strong style="color:var(--green);" id="ndaCopyPartyCallsign"></strong>, who has applied to participate in the closed pre-alpha testing programme.</p>
+        <p>This Agreement is entered into as of <strong id="ndaCopyPartyDate"></strong>.</p>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">2. Confidential Information</div>
+        <p>For the purposes of this Agreement, Confidential Information means all non-public information disclosed by the Studio to the Tester in connection with the pre-alpha testing programme, whether disclosed orally, in writing, electronically, or by any other means, including but not limited to:</p>
+        <ul>
+          <li>The software, source code, build files, and executable(s) provided for testing.</li>
+          <li>The game's title, branding, artwork, audio, user interface, and design documents.</li>
+          <li>Gameplay mechanics, rules, systems, modes, and unreleased features.</li>
+          <li>Bug reports, feedback, test data, and internal communications relating to development.</li>
+          <li>Business plans, release dates, pricing, and any other commercial information.</li>
+          <li>The identity of other testers or members of the testing group.</li>
+        </ul>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">3. Tester's Obligations</div>
+        <p>The Tester agrees to:</p>
+        <ul>
+          <li><strong>Keep all Confidential Information strictly private.</strong> The Tester shall not disclose, share, publish, or communicate any Confidential Information to any third party without the prior written consent of the Studio.</li>
+          <li><strong>No streaming or recording.</strong> The Tester shall not livestream, screen-record, capture, upload, or otherwise broadcast any gameplay footage, screenshots, or audio derived from the pre-alpha build on any platform, including but not limited to Twitch, YouTube, TikTok, Discord, Twitter/X, Reddit, or any other social media or video-sharing service.</li>
+          <li><strong>No discussion outside approved test groups.</strong> The Tester shall not discuss, describe, or reference the game's content, mechanics, title, or development status in any public forum, community, or platform outside of the designated and approved testing channels provided by the Studio.</li>
+          <li><strong>No copying or distribution.</strong> The Tester shall not copy, distribute, reverse-engineer, decompile, or modify any part of the software or materials provided.</li>
+          <li><strong>Secure handling.</strong> The Tester shall take reasonable steps to keep the build and all associated materials secure and shall not permit any other person access to them.</li>
+          <li><strong>Prompt notification.</strong> The Tester shall notify the Studio immediately upon becoming aware of any unauthorised disclosure or use of Confidential Information.</li>
+        </ul>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">4. Exclusions</div>
+        <p>The obligations in clause 3 do not apply to information that the Tester can demonstrate:</p>
+        <ul>
+          <li>Was already publicly known at the time of disclosure through no fault of the Tester.</li>
+          <li>Becomes publicly known after disclosure through no act or omission of the Tester.</li>
+          <li>Was independently developed by the Tester without reference to the Confidential Information.</li>
+          <li>Is required to be disclosed by law or court order, provided the Tester gives the Studio prompt prior written notice to allow the Studio to seek a protective order.</li>
+        </ul>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">5. Duration</div>
+        <p>This Agreement comes into force on the date signed by the Tester and remains in full force and effect until the Studio makes an official public release announcement of the game (under its final release title or otherwise), at which point the obligations in clause 3 shall cease with respect to information that forms part of the public release. Obligations relating to information that remains non-public (including unreleased content, source code, and internal materials) continue indefinitely beyond public release.</p>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">6. Termination</div>
+        <p>The Studio may terminate the Tester's participation in the testing programme at any time, at its sole discretion, with or without cause. Upon termination, the Tester's obligations under clauses 3, 5, and 7 shall continue in full force and effect.</p>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">7. Return of Materials</div>
+        <p>Upon request by the Studio, or upon termination of the Tester's participation in the testing programme for any reason, the Tester shall promptly delete all copies of the software, builds, and associated materials from all devices and storage media in their possession or control, and confirm such deletion to the Studio in writing within 7 days of the request.</p>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">8. Intellectual Property</div>
+        <p>Nothing in this Agreement grants the Tester any licence, right, title, or interest in or to the Confidential Information or any intellectual property of the Studio. All intellectual property rights in MineStrike and all associated materials remain the sole and exclusive property of Firefly Cult Studios.</p>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">9. Feedback</div>
+        <p>Any feedback, suggestions, bug reports, or ideas provided by the Tester to the Studio in connection with the testing programme (Feedback) may be used freely by the Studio without restriction, compensation, or attribution. The Tester assigns to the Studio all rights in any such Feedback to the extent permitted by law.</p>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">10. Remedies</div>
+        <p>The Tester acknowledges that any breach of this Agreement may cause the Studio irreparable harm for which monetary damages may be inadequate. The Studio shall be entitled to seek injunctive or other equitable relief in addition to any other remedy available at law or in equity, without the requirement to post a bond or other security.</p>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">11. Governing Law and Jurisdiction</div>
+        <p>This Agreement shall be governed by and construed in accordance with the laws of <strong>England and Wales</strong>. Each party irrevocably submits to the exclusive jurisdiction of the courts of England and Wales to settle any dispute arising out of or in connection with this Agreement.</p>
+      </div>
+
+      <div class="nda-clause">
+        <div class="nda-clause-title">12. General</div>
+        <ul>
+          <li><strong>Entire Agreement.</strong> This Agreement constitutes the entire agreement between the parties with respect to its subject matter and supersedes all prior agreements, representations, or understandings.</li>
+          <li><strong>Severability.</strong> If any provision of this Agreement is found to be unenforceable, the remaining provisions shall continue in full force and effect.</li>
+          <li><strong>No Waiver.</strong> Failure to enforce any provision shall not constitute a waiver of future enforcement.</li>
+          <li><strong>Amendments.</strong> This Agreement may only be amended in writing signed by both parties.</li>
+          <li><strong>Electronic Signatures.</strong> The parties agree that electronic signatures, whether digital or otherwise, shall be deemed valid and binding for all purposes of this Agreement, with the same force and effect as original ink signatures.</li>
+        </ul>
+      </div>
+
+      <!-- Signature block -->
+      <div style="margin-top:28px; padding:20px 24px; background:rgba(0,255,136,0.04); border:1px solid rgba(0,255,136,0.25);">
+        <div class="nda-clause-title" style="margin-top:0;">Electronic Signature</div>
+        <p style="font-size:18px; font-weight:700; font-style:italic; color:var(--green); letter-spacing:0.04em; margin-bottom:16px;" id="ndaCopySig"></p>
+        <div style="display:grid; grid-template-columns:1fr 1fr; gap:12px;">
+          <div>
+            <div class="nda-clause-title" style="margin-top:0; margin-bottom:4px;">Full Legal Name</div>
+            <p style="color:var(--text-primary); font-size:13px;" id="ndaCopySigName"></p>
+          </div>
+          <div>
+            <div class="nda-clause-title" style="margin-top:0; margin-bottom:4px;">Callsign</div>
+            <p style="color:var(--green); font-size:13px; font-weight:bold;" id="ndaCopySigCallsign"></p>
+          </div>
+          <div>
+            <div class="nda-clause-title" style="margin-top:0; margin-bottom:4px;">Date of Signing</div>
+            <p style="color:var(--text-primary); font-size:13px;" id="ndaCopySigDate"></p>
+          </div>
+          <div>
+            <div class="nda-clause-title" style="margin-top:0; margin-bottom:4px;">Agreement Status</div>
+            <p style="color:var(--green); font-size:13px; font-weight:bold;">✓ Agreed &amp; Signed</p>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Bottom download button -->
+    <button class="submit-btn" style="margin-top:20px;" onclick="printNda()">
+      <span>⬇ &nbsp;Download / Print NDA</span>
+    </button>
+  </div>
+
+  <!-- FORM -->
+  <form id="ndaForm" novalidate>
+
+    <!-- PANEL 1: NDA Text -->
+    <div class="glass-panel">
+      <div class="panel-header">
+        <span class="icon">⚑</span>
+        <span class="panel-title">Agreement Terms — Read Before Signing</span>
+      </div>
+
+      <div class="nda-scroll" id="ndaScroll">
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">1. Parties</div>
+          <p><strong>Disclosing Party:</strong> Firefly Cult Studios (the Studio), the developer and owner of the software product currently designated MineStrike (internal working title; final release title withheld), together with all associated materials, concepts, and intellectual property.</p>
+          <p><strong>Receiving Party:</strong> The individual whose name and details appear in the signature block at the foot of this Agreement (the Tester), who has applied to participate in the closed pre-alpha testing programme.</p>
+          <p>This Agreement is entered into as of the date signed by the Tester below.</p>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">2. Confidential Information</div>
+          <p>For the purposes of this Agreement, Confidential Information means all non-public information disclosed by the Studio to the Tester in connection with the pre-alpha testing programme, whether disclosed orally, in writing, electronically, or by any other means, including but not limited to:</p>
+          <ul>
+            <li>The software, source code, build files, and executable(s) provided for testing.</li>
+            <li>The game's title, branding, artwork, audio, user interface, and design documents.</li>
+            <li>Gameplay mechanics, rules, systems, modes, and unreleased features.</li>
+            <li>Bug reports, feedback, test data, and internal communications relating to development.</li>
+            <li>Business plans, release dates, pricing, and any other commercial information.</li>
+            <li>The identity of other testers or members of the testing group.</li>
+          </ul>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">3. Tester's Obligations</div>
+          <p>The Tester agrees to:</p>
+          <ul>
+            <li><strong>Keep all Confidential Information strictly private.</strong> The Tester shall not disclose, share, publish, or communicate any Confidential Information to any third party without the prior written consent of the Studio.</li>
+            <li><strong>No streaming or recording.</strong> The Tester shall not livestream, screen-record, capture, upload, or otherwise broadcast any gameplay footage, screenshots, or audio derived from the pre-alpha build on any platform, including but not limited to Twitch, YouTube, TikTok, Discord, Twitter/X, Reddit, or any other social media or video-sharing service.</li>
+            <li><strong>No discussion outside approved test groups.</strong> The Tester shall not discuss, describe, or reference the game's content, mechanics, title, or development status in any public forum, community, or platform outside of the designated and approved testing channels provided by the Studio.</li>
+            <li><strong>No copying or distribution.</strong> The Tester shall not copy, distribute, reverse-engineer, decompile, or modify any part of the software or materials provided.</li>
+            <li><strong>Secure handling.</strong> The Tester shall take reasonable steps to keep the build and all associated materials secure and shall not permit any other person access to them.</li>
+            <li><strong>Prompt notification.</strong> The Tester shall notify the Studio immediately upon becoming aware of any unauthorised disclosure or use of Confidential Information.</li>
+          </ul>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">4. Exclusions</div>
+          <p>The obligations in clause 3 do not apply to information that the Tester can demonstrate:</p>
+          <ul>
+            <li>Was already publicly known at the time of disclosure through no fault of the Tester.</li>
+            <li>Becomes publicly known after disclosure through no act or omission of the Tester.</li>
+            <li>Was independently developed by the Tester without reference to the Confidential Information.</li>
+            <li>Is required to be disclosed by law or court order, provided the Tester gives the Studio prompt prior written notice to allow the Studio to seek a protective order.</li>
+          </ul>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">5. Duration</div>
+          <p>This Agreement comes into force on the date signed by the Tester and remains in full force and effect until the Studio makes an official public release announcement of the game (under its final release title or otherwise), at which point the obligations in clause 3 shall cease with respect to information that forms part of the public release. Obligations relating to information that remains non-public (including unreleased content, source code, and internal materials) continue indefinitely beyond public release.</p>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">6. Termination</div>
+          <p>The Studio may terminate the Tester's participation in the testing programme at any time, at its sole discretion, with or without cause. Upon termination, the Tester's obligations under clauses 3, 5, and 7 shall continue in full force and effect.</p>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">7. Return of Materials</div>
+          <p>Upon request by the Studio, or upon termination of the Tester's participation in the testing programme for any reason, the Tester shall promptly delete all copies of the software, builds, and associated materials from all devices and storage media in their possession or control, and confirm such deletion to the Studio in writing within 7 days of the request.</p>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">8. Intellectual Property</div>
+          <p>Nothing in this Agreement grants the Tester any licence, right, title, or interest in or to the Confidential Information or any intellectual property of the Studio. All intellectual property rights in MineStrike and all associated materials remain the sole and exclusive property of Firefly Cult Studios.</p>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">9. Feedback</div>
+          <p>Any feedback, suggestions, bug reports, or ideas provided by the Tester to the Studio in connection with the testing programme (Feedback) may be used freely by the Studio without restriction, compensation, or attribution. The Tester assigns to the Studio all rights in any such Feedback to the extent permitted by law.</p>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">10. Remedies</div>
+          <p>The Tester acknowledges that any breach of this Agreement may cause the Studio irreparable harm for which monetary damages may be inadequate. The Studio shall be entitled to seek injunctive or other equitable relief in addition to any other remedy available at law or in equity, without the requirement to post a bond or other security.</p>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">11. Governing Law and Jurisdiction</div>
+          <p>This Agreement shall be governed by and construed in accordance with the laws of <strong>England and Wales</strong>. Each party irrevocably submits to the exclusive jurisdiction of the courts of England and Wales to settle any dispute arising out of or in connection with this Agreement.</p>
+        </div>
+
+        <div class="nda-clause">
+          <div class="nda-clause-title">12. General</div>
+          <ul>
+            <li><strong>Entire Agreement.</strong> This Agreement constitutes the entire agreement between the parties with respect to its subject matter and supersedes all prior agreements, representations, or understandings.</li>
+            <li><strong>Severability.</strong> If any provision of this Agreement is found to be unenforceable, the remaining provisions shall continue in full force and effect.</li>
+            <li><strong>No Waiver.</strong> Failure to enforce any provision shall not constitute a waiver of future enforcement.</li>
+            <li><strong>Amendments.</strong> This Agreement may only be amended in writing signed by both parties.</li>
+            <li><strong>Electronic Signatures.</strong> The parties agree that electronic signatures, whether digital or otherwise, shall be deemed valid and binding for all purposes of this Agreement, with the same force and effect as original ink signatures.</li>
+          </ul>
+        </div>
+
+      </div>
+      <div class="scroll-hint" id="scrollHint">▼ scroll to read full agreement ▼</div>
+    </div>
+
+    <!-- PANEL 2: Identity -->
+    <div class="glass-panel">
+      <div class="panel-header">
+        <span class="icon">◈</span>
+        <span class="panel-title">Operative Identity</span>
+      </div>
+      <div class="field-group">
+        <div class="field-row">
+          <div class="field" id="field-fullname">
+            <label>Full Legal Name <span class="req">*</span></label>
+            <input type="text" name="fullname" placeholder="John Doe" required autocomplete="name">
+          </div>
+          <div class="field" id="field-callsign">
+            <label>Callsign <span class="req">*</span></label>
+            <input type="text" name="callsign" placeholder="e.g. Gh0stWire" required maxlength="24">
+          </div>
+        </div>
+        <div class="field" id="field-email">
+          <label>Email Address <span class="req">*</span></label>
+          <input type="email" name="email" placeholder="you@domain.com" required autocomplete="email">
+        </div>
+        <div class="field">
+          <label>Date of Signing</label>
+          <div class="date-display">
+            <span class="date-icon">◎</span>
+            <span class="date-text" id="dateDisplay"></span>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- PANEL 3: Signature -->
+    <div class="glass-panel">
+      <div class="panel-header">
+        <span class="icon">✦</span>
+        <span class="panel-title">Signature</span>
+      </div>
+      <div class="field-group">
+        <div class="field sig-field" id="field-signature">
+          <label>Type your full legal name to sign <span class="req">*</span></label>
+          <input type="text" name="signed_name" placeholder="Sign here — type your full legal name" required autocomplete="off" spellcheck="false">
+          <div class="sig-note">Typing your name above constitutes a legally binding electronic signature</div>
+        </div>
+        <label class="consent-label" id="consentLabel">
+          <input type="checkbox" name="agreed" id="agreed" required>
+          <span class="consent-box"></span>
+          <span class="consent-text">
+            I confirm I have read and understood the full agreement above. I am <em>18 years of age or older</em>, have the legal capacity to enter into this Agreement, and agree to be bound by all of its terms.
+          </span>
+        </label>
+      </div>
+    </div>
+
+    <!-- SUBMIT -->
+    <div class="submit-wrap">
+      <button type="submit" class="submit-btn" id="submitBtn">
+        <span id="submitLabel">✦ &nbsp;Sign Agreement</span>
+      </button>
+    </div>
+
+  </form>
+
+  <div class="footer">
+    © 2026 Firefly Cult Studios &nbsp;·&nbsp; MineStrike Pre-Alpha NDA &nbsp;·&nbsp; Governed by the laws of England and Wales
+  </div>
+
+</div>
+
+<script>
+  // ── INTEGRATION CREDENTIALS ───────────────────────────────────────
+  const SUPABASE_URL      = 'https://qjviiqcqvjutxkzundga.supabase.co';
+  const SUPABASE_ANON_KEY = 'sb_publishable_WvH7uP3ew_E5HwYeOPWP9A_A5qc8zjg';
+  const NDA_PDF_URL       = 'https://fireflycultstudios.github.io/projectminestrikeNDA/MineStrike_NDA.pdf';
+  // ─────────────────────────────────────────────────────────────────
+
+  // Set today's date
+  const today = new Date();
+  document.getElementById('dateDisplay').textContent =
+    today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+
+  // Hide scroll hint once user reaches bottom of NDA
+  const ndaScroll = document.getElementById('ndaScroll');
+  ndaScroll.addEventListener('scroll', function() {
+    if (this.scrollTop + this.clientHeight >= this.scrollHeight - 20) {
+      document.getElementById('scrollHint').style.opacity = '0';
+    }
+  });
+
+  const form         = document.getElementById('ndaForm');
+  const submitBtn    = document.getElementById('submitBtn');
+  const submitLabel  = document.getElementById('submitLabel');
+  const successPanel = document.getElementById('successPanel');
+
+  form.addEventListener('submit', async function(e) {
+    e.preventDefault();
+
+    const fullname    = form.fullname.value.trim();
+    const callsign    = form.callsign.value.trim();
+    const email       = form.email.value.trim();
+    const signed_name = form.signed_name.value.trim();
+    const agreed      = form.agreed.checked;
+    const signed_date = today.toISOString().split('T')[0];
+
+    // Clear previous errors
+    document.querySelectorAll('.field-error').forEach(el => el.classList.remove('field-error'));
+    document.getElementById('consentLabel').classList.remove('consent-error');
+
+    // Validate
+    let valid = true;
+    if (!fullname)    { document.getElementById('field-fullname').classList.add('field-error');  valid = false; }
+    if (!callsign)    { document.getElementById('field-callsign').classList.add('field-error');  valid = false; }
+    if (!email || !/^[^\s@]+@[^\s@]+\.[^\s@]+$/.test(email)) {
+                        document.getElementById('field-email').classList.add('field-error');     valid = false; }
+    if (!signed_name) { document.getElementById('field-signature').classList.add('field-error'); valid = false; }
+    if (!agreed)      { document.getElementById('consentLabel').classList.add('consent-error');  valid = false; }
+    if (!valid) return;
+
+    // Disable button while saving
+    submitBtn.disabled = true;
+    submitLabel.textContent = 'Recording signature…';
+
+    const payload = { fullname, callsign, email, signed_name, agreed, signed_date };
+
+    try {
+      // Save to Supabase nda_signatures table
+      await fetch(`${SUPABASE_URL}/rest/v1/nda_signatures`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'apikey': SUPABASE_ANON_KEY,
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`,
+          'Prefer': 'return=minimal'
+        },
+        body: JSON.stringify(payload)
+      });
+
+      // Trigger confirmation email via Supabase Edge Function
+      await fetch(`${SUPABASE_URL}/functions/v1/send-nda-confirmation`, {
+        method: 'POST',
+        headers: {
+          'Content-Type': 'application/json',
+          'Authorization': `Bearer ${SUPABASE_ANON_KEY}`
+        },
+        body: JSON.stringify({
+          to: email,
+          name: fullname,
+          callsign: callsign,
+          signed_name: signed_name,
+          signed_date: signed_date,
+          nda_url: NDA_PDF_URL
+        })
+      });
+
+    } catch (err) {
+      console.warn('Submission warning:', err);
+    }
+
+    // Show success screen
+    form.style.display = 'none';
+    successPanel.style.display = 'block';
+    document.getElementById('successCallsign').textContent = `OPERATIVE: ${callsign.toUpperCase()}`;
+
+    // Populate signed NDA copy
+    const displayDate = today.toLocaleDateString('en-GB', { day: 'numeric', month: 'long', year: 'numeric' });
+    document.getElementById('ndaCopyName').textContent = fullname;
+    document.getElementById('ndaCopyCallsign').textContent = callsign;
+    document.getElementById('ndaCopyDate').textContent = displayDate;
+    document.getElementById('ndaCopyPartyName').textContent = fullname;
+    document.getElementById('ndaCopyPartyCallsign').textContent = callsign;
+    document.getElementById('ndaCopyPartyDate').textContent = displayDate;
+    document.getElementById('ndaCopySig').textContent = signed_name;
+    document.getElementById('ndaCopySigName').textContent = fullname;
+    document.getElementById('ndaCopySigCallsign').textContent = callsign;
+    document.getElementById('ndaCopySigDate').textContent = displayDate;
+    document.getElementById('signedNdaCopy').style.display = 'block';
+  });
+
+  function printNda() {
+    window.print();
+  }
+</script>
+</body>
+</html>
