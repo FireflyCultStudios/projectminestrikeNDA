@@ -298,6 +298,25 @@
   .submit-btn:disabled { opacity: 0.5; cursor: not-allowed; }
   .submit-btn span { position: relative; z-index: 1; }
 
+  /* ── GDPR NOTICE ── */
+  .gdpr-notice {
+    margin-top: 12px;
+    font-size: 11px;
+    line-height: 1.7;
+    color: var(--text-dim);
+    text-align: center;
+    font-weight: 500;
+  }
+
+  .gdpr-link {
+    color: var(--text-secondary);
+    text-decoration: underline;
+    text-underline-offset: 2px;
+    transition: color 0.2s;
+  }
+
+  .gdpr-link:hover { color: var(--cyan); }
+
   /* ── ERROR STATES ── */
   .field-error input {
     border-color: rgba(255,45,120,0.6) !important;
@@ -724,6 +743,7 @@
       <button type="submit" class="submit-btn" id="submitBtn">
         <span id="submitLabel">✦ &nbsp;Sign Agreement</span>
       </button>
+      <p class="gdpr-notice">By submitting this form, you consent to Firefly Cult Studios collecting and storing the information provided for the purpose of managing the MineStrike pre-alpha testing programme. Your data will not be shared with third parties. For more information, see our <a href="#" class="gdpr-link">Privacy Policy</a>.</p>
     </div>
 
   </form>
